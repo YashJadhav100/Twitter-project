@@ -1,39 +1,109 @@
-# Twitter-like JSONL Data Starter
+Perfect — here’s a **clean and professional README** (without extra “notes” sections). It also clearly tells your professor that the Twitter Project folder has been uploaded to Google Drive. You can copy this directly as your `README.md`.
 
-This mini-starter helps you **quickly load, sanity-check, and convert** the dataset the professor sent you.
+---
 
-## Folder
-- `process_jsonl.py` — loads JSONL (one JSON object per line), validates key fields, parses dates, dedupes, and writes Parquet + a small CSV sample
-- `schema.json` — expected fields you can edit
-- `requirements.txt` — install these once in your virtual env
-- `run_example.sh` / `run_example.bat` — quick-run helpers
+# Twitter Data Analysis Project
 
-## 1) Setup (one time)
-```bash
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+This repository contains code and outputs for analyzing Twitter data using machine learning models. The workflow covers preprocessing, prediction, summarization, and visualization.
+
+---
+
+## 📂 Repository Structure
+
+```
+twitter_data_starter/
+│
+├── 01_preprocess.py         # Script for cleaning and preprocessing raw JSON Twitter data
+├── 02_train_model.py        # (Optional) Training script for fine-tuning classification models
+├── 03_predict.py            # Script for running predictions on new Twitter data
+├── 04_eval.py               # Evaluation script for classification outputs
+├── 05_visualize.py          # Visualization of predictions and evaluation metrics
+├── 06_summarize_preds.py    # Script to summarize predictions (counts, plots, examples)
+│
+├── preds_im1_20k_debug.csv  # Sample predictions on 20k tweets
+├── summary_table.csv        # Emotion counts table (generated output)
+├── summary_plot.png         # Bar chart visualization of predicted emotions
+├── examples_by_label.txt    # Sample tweets per predicted emotion
+│
+├── requirements.txt         # Python dependencies
+├── README.md                # Documentation (this file)
 ```
 
-## 2) Put the file the professor sent
-Copy it to this folder and note its filename. If the file is large, you can test on a capped number of rows first.
+---
 
-## 3) Run
-Example for a file named `all_im1_11082024.json`:
+## ⚙️ Setup Instructions
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/YashJadhav100/twitter_data_starter.git
+   cd twitter_data_starter
+   ```
+
+2. **Create a virtual environment (recommended)**
+
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate   # Mac/Linux
+   .venv\Scripts\activate      # Windows
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+## ▶️ Running the Scripts
+
+### 1. Preprocess Twitter JSON
+
+Convert raw JSONL files into a clean DataFrame:
+
 ```bash
-python process_jsonl.py --input all_im1_11082024.json --schema schema.json --outdir out --rows 5000
+python 01_preprocess.py --input data/all_tweets.json --output clean_tweets.csv
 ```
 
-**Flags:**
-- `--rows` is optional; remove it to read all rows.
-- `--sample 2000` changes how many rows go into `out/sample.csv`.
+### 2. Run Predictions
 
-## 4) Results
-- `out/data.parquet` — columnar, fast to load
-- `out/sample.csv` — quick peek of cleaned rows
-- `out/SUMMARY.md` — tiny quality report (nulls, langs, etc.)
+Classify emotions on preprocessed data:
 
-## 5) Next steps (suggested)
-- Inspect `SUMMARY.md`
-- Load `data.parquet` in notebooks for EDA and modeling
-- If your fields differ, edit `schema.json` (add/remove optional fields, or change required keys)
+```bash
+python 03_predict.py --input clean_tweets.csv --output preds.csv
+```
+
+### 3. Summarize Predictions
+
+Generate tables, plots, and example tweets by label:
+
+```bash
+python 06_summarize_preds.py --preds preds.csv --per_label 2
+```
+
+This produces:
+
+* `summary_table.csv` → Counts of predicted emotions
+* `summary_plot.png` → Bar chart of predictions
+* `examples_by_label.txt` → Example tweets per label
+
+---
+
+## 📊 Key Outputs
+
+* **`preds_im1_20k_debug.csv`** → Predictions on \~20k tweets (labels + probabilities)
+* **`summary_table.csv`** → Counts of each predicted emotion
+* **`summary_plot.png`** → Bar chart of predicted emotions
+* **`examples_by_label.txt`** → Two sample tweets per predicted emotion
+
+---
+
+## 📥 Access
+
+* The full **Twitter Project folder** (including scripts and outputs) has been uploaded to Google Drive:
+  👉 https://drive.google.com/drive/folders/1PCAOvHJjCDrKwPNgqPzoz8ASFHwQbPOi?usp=drive_link
+
+---
+
+Do you want me to also **write the short message for your professor** (to send along with the Google Drive link + this README), so they know exactly what’s inside and how to access?
